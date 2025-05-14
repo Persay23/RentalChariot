@@ -1,0 +1,6 @@
+@RentalChariot_HostAddress = http://localhost:5234
+
+GET {{RentalChariot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
