@@ -9,18 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-//Maybe in Future I will take DefaultConnection from appsetting.json
-//Database link is Here
-var dbOptionsBuilder = new DbContextOptionsBuilder<RentalChariotDbContext>();
-dbOptionsBuilder.UseSqlServer("Server=tcp:databasevoks.database.windows.net,1433;Initial Catalog=RentalChariot;User ID=admin1;Password=Password1;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-var db = new RentalChariotDbContext(dbOptionsBuilder.Options);
-Console.WriteLine(db.Database.CanConnect());
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); //This var for getting DataBase string from dotnet user-secrets,
+                                                                                       //Huj ego znaet I dalbaeb skinul v pablic paroli, nu i huj z nim
+builder.Services.AddDbContext<RentalChariotDbContext>(options => //Bludskaya Hueta nie soedeniatsa kak na Leksii Sharfika. Hueta trebuet ety ZALUPu  
+    options.UseSqlServer(connectionString));
 
-//TEST
-var user = new User { name = "Test1", password = "Test2" };
-
-
+//FIRST Variant, it's will be change to Forever Running 
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<RentalChariotDbContext>();
+    Console.WriteLine(db.Database.CanConnect());
+    //EXAMPLE OF ADDING NEW USER
+    //var user = new User { Name = "TestName", Password = "TestPass" };
+    //db.Users.Add(user);
+    //db.SaveChanges();
+}
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -30,14 +34,4 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 app.MapControllers();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var context = scope.ServiceProvider.GetRequiredService<RentalChariotDbContext>();
-
-//    bool canConnect = context.Database.CanConnect();
-//    Console.WriteLine(canConnect ? "Connected to DB!" : "ALARM ALARM ALARM ALARM: — ¿∆»“≈ ¬» “Œ–” ¬¿ÿ IP ◊“Œ¡€ œŒƒ Àﬁ◊»“‹—ﬂ.");
-//}
-
-
 app.Run();

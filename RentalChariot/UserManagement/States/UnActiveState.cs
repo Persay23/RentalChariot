@@ -1,17 +1,17 @@
 ﻿namespace RentalChariot.UserManagement
 {
-    public class ActiveState : IUserState
+    public class UnActiveState : IUserState
     {
-        public string StateName => "Active";
+        public string StateName => "UnActive";
 
         public IUserState Login()
         {
-            return this;
+            return new ActiveState();
         }
 
         public IUserState LogOut()
         {
-            return new UnActiveState();
+            return this;
         }
     }
 }

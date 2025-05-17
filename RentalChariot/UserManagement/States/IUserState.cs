@@ -2,6 +2,10 @@
 {
     public interface IUserState
     {
-        IUserState AccessResource();
+        string StateName { get; }
+
+        IUserState Login();
+
+        IUserState LogOut();
     }
 }

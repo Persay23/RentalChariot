@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalChariot", "RentalChar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseTest", "DatabaseTest\DatabaseTest.csproj", "{5A611389-8CBD-44C2-ABB6-04BD7917D409}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{88798AEA-B672-476F-9074-1C7D05950755}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5A611389-8CBD-44C2-ABB6-04BD7917D409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A611389-8CBD-44C2-ABB6-04BD7917D409}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A611389-8CBD-44C2-ABB6-04BD7917D409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88798AEA-B672-476F-9074-1C7D05950755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88798AEA-B672-476F-9074-1C7D05950755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88798AEA-B672-476F-9074-1C7D05950755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88798AEA-B672-476F-9074-1C7D05950755}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
