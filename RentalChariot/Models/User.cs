@@ -12,16 +12,8 @@ public class User
     [NotMapped]
     public IUserState _userState { get; set; }
 
-
     public User()
     {
-        _userState = new UnAutorizedState();
-    }
-
-    public User(string Name, string Password)
-    {
-        name = Name;
-        password = Password;
         _userState = new UnAutorizedState();
     }
 
