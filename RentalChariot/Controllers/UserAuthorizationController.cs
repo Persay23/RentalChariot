@@ -25,7 +25,25 @@ namespace RentalChariot.Controllers
             {
                 return Unauthorized("Wrong login or password");
             }
+            user.Login();
+            _context.SaveChanges();
             return Ok("Login successful");
+        }
+        //Not Cool everyone could use it
+        //TODO maybe create some kinda class Token that only User will see 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] UserLogOutRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            user.LogOut();  
+            await _context.SaveChangesAsync();
+
+            return Ok("Logout successful");
         }
     }
 }
