@@ -23,6 +23,9 @@ using (var scope = builder.Services.BuildServiceProvider().CreateScope())
     //var user = new User { Name = "TestName", Password = "TestPass" };
     //db.Users.Add(user);
     //db.SaveChanges();
+    //var admin = new Admin { Name = "AdminTestName", Password = "AdminTestPass" };
+    //db.Users.Add(admin);
+    //db.SaveChanges();
 }
 var app = builder.Build();
 

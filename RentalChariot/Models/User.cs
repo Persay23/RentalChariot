@@ -20,9 +20,6 @@ public class User
     public string StateName { get; set; }
     [NotMapped]
     public IUserState UserState { get; set; }
-    [Required]
-    [MaxLength(100)]
-    public string RoleName { get; set; }
     [NotMapped]
     public IUserRole UserRole { get; set; }
 
@@ -31,7 +28,6 @@ public class User
         UserState = new UnActiveState();
         StateName = UserState.StateName;
         UserRole = new UserRole();
-        RoleName = UserRole.RoleName;
     }
     public void Login()
     {
@@ -58,7 +54,6 @@ public class Admin : User
         StateName = UserState.StateName;
 
         UserRole = new AdminRole();
-        RoleName = UserRole.RoleName;
     }
     public void Ban(User user)
     {

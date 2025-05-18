@@ -1,6 +1,6 @@
 ﻿namespace RentalChariot.DTOs
 {
-    public class UserLogOutRequest
+    public class CurrentUser
     {
         public string Name { get; set; }
     }
