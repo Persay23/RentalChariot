@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RentalChariot.UserManagement.Roles;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalChariot.UserManagement;
@@ -18,50 +19,59 @@ public class User
     [MaxLength(100)]
     public string StateName { get; set; }
     [NotMapped]
-    public IUserState _userState { get; set; }
-    //Need to update Migration, I am so lazy :(
+    public IUserState UserState { get; set; }
     [Required]
     [MaxLength(100)]
-    public string Role { get; set; }
+    public string RoleName { get; set; }
     [NotMapped]
-    public IUserRole _userRole { get; set; }
+    public IUserRole UserRole { get; set; }
 
     public User()
     {
-        _userState = new UnActiveState();
-        StateName = _userState.StateName;
-        _userRole = new UserRole();
-        Role = _userRole.RoleName;
+        UserState = new UnActiveState();
+        StateName = UserState.StateName;
+        UserRole = new UserRole();
+        RoleName = UserRole.RoleName;
     }
     public void Login()
     {
-        var newState = _userState.Login();
+        var newState = UserState.Login();
         ChangeState(newState);
     }
     public void LogOut()
     {
-        var newState = _userState.LogOut();
+        var newState = UserState.LogOut();
         ChangeState(newState);
+    }
+
+    public void ChangeState(IUserState newState)
+    {
+        UserState = newState;
+        StateName = newState.StateName;
+    }
+}
+public class Admin : User
+{
+    public Admin() : base()
+    {
+        UserState = new UnActiveState();
+        StateName = UserState.StateName;
+
+        UserRole = new AdminRole();
+        RoleName = UserRole.RoleName;
     }
     public void Ban(User user)
     {
-        if (user.Role == "Admin" || user.StateName == "Banned")
-            return;
-        var newState = _userRole.Ban();
+        //UserRole.Ban() return a IUserState not IUserRole
+        var newState = UserRole.Ban();
         if (newState != null)
-            user._userState = newState;
+            user.ChangeState(newState);
     }
     public void UnBan(User user)
     {
-
+        if (user.StateName != "Banned")
+            return;
+        var newState = UserRole.UnBan();
+        user.ChangeState(newState);
     }
-
-    private void ChangeState(IUserState newState)
-    {
-        _userState = newState;
-        StateName = newState.StateName;
-    }
-
-    //LATER EXTRACT _userState From StateName 
 }
-

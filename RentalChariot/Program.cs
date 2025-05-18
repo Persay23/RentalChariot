@@ -14,7 +14,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
                                                                                        //Huj ego znaet I dalbaeb skinul v pablic paroli, nu i huj z nim
 builder.Services.AddDbContext<RentalChariotDbContext>(options => //Bludskaya Hueta nie soedeniatsa kak na Leksii Sharfika. Hueta trebuet ety ZALUPu  
     options.UseSqlServer(connectionString));
-
 //FIRST Variant, it's will be change to Forever Running 
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
