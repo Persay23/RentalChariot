@@ -24,14 +24,18 @@ namespace RentalChariot.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+            user.InitializeUserState();
             if (user == null || user.Password != request.Password)
             {
                 return Unauthorized("Wrong login or password");
             }
+            Console.WriteLine(user.StateName); 
             user.Login();
+            Console.WriteLine(user.StateName); 
             _context.SaveChanges();
             return Ok("Login successful");
         }
+
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] UserCreateRequest request)
         {
@@ -41,8 +45,11 @@ namespace RentalChariot.Controllers
                 return BadRequest("Name or Password is null");
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+            user.InitializeUserState();
+
             if (user != null)
                 return Unauthorized("Account already exist");
+
             var newUser = new User
             {
                 Name = request.Name,
@@ -58,6 +65,7 @@ namespace RentalChariot.Controllers
         public async Task<IActionResult> Logout([FromBody] CurrentUser request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+
             if (user == null)
             {
                 return NotFound("User not found");
@@ -75,18 +83,23 @@ namespace RentalChariot.Controllers
             var adminInput = request.Admin;
             var userToBanInput = request.UserToBan;
 
-            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == adminInput.Name); 
+            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == adminInput.Name);
+            
             if (adminUser == null)
-            {
                 return NotFound("Admin not found");
-            }
+
             var Admin = adminUser as Admin;
+
+            if (Admin == null)
+                return Unauthorized("Permission denied (You are not Admin)");
+
             var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToBanInput.Name);
+
             if (User == null)
-            {
                 return NotFound("Admin not found");
-            }
+
             Admin.Ban(User);
+
             await _context.SaveChangesAsync();
             return Ok("Ban successful");
         }

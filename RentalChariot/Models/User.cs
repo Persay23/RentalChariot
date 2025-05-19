@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalChariot.UserManagement;
 
+//USER it's like a CLIENT , later add FirstName, LastName, email
 public class User
 {
+    
     [Key]
-    public int Id { get; set; }
+    public int UserId { get; set; }
     [Required]
     [MaxLength(100)]
     public string Name { get; set; }
@@ -45,6 +47,15 @@ public class User
         UserState = newState;
         StateName = newState.StateName;
     }
+    public void InitializeUserState()
+    {
+        UserState = StateName switch
+        {
+            "UnActive" => new UnActiveState(),
+            "Active" => new ActiveState(),
+            "Banned" => new BannedState(),
+        };
+    }
 }
 public class Admin : User
 {
@@ -69,4 +80,4 @@ public class Admin : User
         var newState = UserRole.UnBan();
         user.ChangeState(newState);
     }
-}
+  }

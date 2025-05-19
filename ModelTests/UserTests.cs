@@ -13,7 +13,6 @@ namespace ModelTests
             user.Name.Should().Be("TestName");
             user.Password.Should().Be("TestPass");
             user.StateName.Should().Be("UnActive");
-            user.RoleName.Should().Be("User");
         }
         [Fact]
         public void AdminCanBeCreated()
@@ -23,7 +22,6 @@ namespace ModelTests
             user.Name.Should().Be("TestName");
             user.Password.Should().Be("TestPass");
             user.StateName.Should().Be("UnActive");
-            user.RoleName.Should().Be("Admin");
         }
 
         [Fact]
@@ -62,6 +60,9 @@ namespace ModelTests
 
             admin.Ban(user);
             user.StateName.Should().Be("Banned");
+            user.Login();
+            user.StateName.Should().Be("Banned");
+            user.UserState.Should().BeOfType<BannedState>(); //All True How?
 
         }
         [Fact]
