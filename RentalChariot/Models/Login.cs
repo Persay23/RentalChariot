@@ -15,7 +15,7 @@ namespace RentalChariot.Models
         public string Token { get; set; }
 
         [Required]
-        public DateTime LasLoginTime { get; set; }
+        public DateTime LasLoginTime { get; set; } // Rename to LoginTime
 
         private LoginToken(int userId) {
             UserId = userId;
