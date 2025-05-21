@@ -10,7 +10,7 @@ namespace ModelTests
         {
             var car = Car.CreateCar
             (
-                carId: 2,
+                carId: 3,
                 brand: "Toyota",
                 model: "Corolla",
                 number: "ABC-1234",
@@ -19,7 +19,7 @@ namespace ModelTests
                 enginevol: 1600,
                 miliage: 50000
             );
-            car.CarId.Should().Be( 2 );
+            car.CarId.Should().Be( 3 );
             car.Brand.Should().Be("Toyota");
 
         }
