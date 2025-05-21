@@ -1,4 +1,4 @@
-﻿namespace RentalChariot.UserManagement.Roles
+﻿namespace RentalChariot.UserManagement
 {
     public class AdminRole : IUserRole
     {

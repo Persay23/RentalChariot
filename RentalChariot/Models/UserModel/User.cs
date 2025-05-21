@@ -1,13 +1,12 @@
-﻿using RentalChariot.UserManagement.Roles;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RentalChariot.UserManagement;     
 
-namespace RentalChariot.UserManagement;
+namespace RentalChariot.Models;
 
 //USER it's like a CLIENT , later add FirstName, LastName, email
 public class User
 {
-    
     [Key]
     public int UserId { get; set; }
     [Required]
@@ -16,6 +15,7 @@ public class User
     [Required]
     [MaxLength(100)]
     public string Password { get; set; }
+
 
     [Required]
     [MaxLength(100)]
@@ -33,19 +33,13 @@ public class User
     }
     public void Login()
     {
-        var newState = UserState.Login();
-        ChangeState(newState);
+        UserState = UserState.Login();
+        UpdateUser();
     }
     public void LogOut()
     {
-        var newState = UserState.LogOut();
-        ChangeState(newState);
-    }
-
-    public void ChangeState(IUserState newState)
-    {
-        UserState = newState;
-        StateName = newState.StateName;
+        UserState = UserState.LogOut();
+        UpdateUser();
     }
     public void InitializeUserState()
     {
@@ -55,6 +49,16 @@ public class User
             "Active" => new ActiveState(),
             "Banned" => new BannedState(),
         };
+    }
+
+    public bool IsAbleToCreateRent()
+    {
+        return UserState.IsAbleToCreateRent;
+    }
+
+    public void UpdateUser()
+    {
+        StateName = UserState.StateName; 
     }
 }
 public class Admin : User
@@ -69,15 +73,15 @@ public class Admin : User
     public void Ban(User user)
     {
         //UserRole.Ban() return a IUserState not IUserRole
-        var newState = UserRole.Ban();
-        if (newState != null)
-            user.ChangeState(newState);
+        user.UserState = UserRole.Ban();
+        user.UpdateUser();
+
     }
     public void UnBan(User user)
     {
         if (user.StateName != "Banned")
             return;
-        var newState = UserRole.UnBan();
-        user.ChangeState(newState);
+        user.UserState = UserRole.UnBan();
+        user.UpdateUser();
     }
   }

@@ -1,4 +1,5 @@
 using FluentAssertions;
+using RentalChariot.Models;
 using RentalChariot.UserManagement;
 
 namespace ModelTests
@@ -8,8 +9,9 @@ namespace ModelTests
         [Fact]
         public void UserCanBeCreated()
         {
-            var user = new User { Name = "TestName", Password = "TestPass" };
+            var user = new User { UserId = 1, Name = "TestName", Password = "TestPass" };
 
+            user.UserId.Should().Be(1);
             user.Name.Should().Be("TestName");
             user.Password.Should().Be("TestPass");
             user.StateName.Should().Be("UnActive");
@@ -62,7 +64,7 @@ namespace ModelTests
             user.StateName.Should().Be("Banned");
             user.Login();
             user.StateName.Should().Be("Banned");
-            user.UserState.Should().BeOfType<BannedState>(); //All True How?
+            user.UserState.Should().BeOfType<BannedState>(); 
 
         }
         [Fact]

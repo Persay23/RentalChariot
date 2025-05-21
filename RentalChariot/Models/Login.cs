@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace RentalChariot.Models
 {
-    public class Login
+    public class LoginToken
     {
+        [Key]
+        public int LoginId { get; set; }
+
         [Required]
         public int UserId { get; set; }
 
@@ -13,5 +17,35 @@ namespace RentalChariot.Models
         [Required]
         public DateTime LasLoginTime { get; set; }
 
+        private LoginToken(int userId) {
+            UserId = userId;
+            LasLoginTime = DateTime.Now;
+            Token = GenerateToken();
+        }
+
+        public static LoginToken Create(int userId)
+        {
+            return new LoginToken(userId);
+        }    
+
+
+        private string GenerateToken()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder result = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < 25; i++)
+            {
+                result.Append(chars[random.Next(chars.Length)]);
+            }
+
+            return result.ToString();
+        }
+
+
+
     }
+
+
 }

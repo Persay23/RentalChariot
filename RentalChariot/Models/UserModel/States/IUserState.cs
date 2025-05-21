@@ -4,6 +4,8 @@
     {
         string StateName { get; }
 
+        bool IsAbleToCreateRent { get; }
+
         IUserState Login();
 
         IUserState LogOut();

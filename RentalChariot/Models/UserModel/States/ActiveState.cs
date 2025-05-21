@@ -4,6 +4,8 @@
     {
         public string StateName => "Active";
 
+        public bool IsAbleToCreateRent => true;
+
         public IUserState Login()
         {
             return this;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentalChariot.Db;
 using RentalChariot.DTOs;
+using RentalChariot.Models;
 using RentalChariot.UserManagement;
 
 namespace RentalChariot.Controllers
@@ -24,16 +25,26 @@ namespace RentalChariot.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
-            user.InitializeUserState();
+
             if (user == null || user.Password != request.Password)
-            {
                 return Unauthorized("Wrong login or password");
-            }
-            Console.WriteLine(user.StateName); 
+            //Check if User has LoginToken delete LoginToken
+            if (user != null && await _context.LoginTokens.AnyAsync(u => u.UserId == user.UserId))
+                _context.LoginTokens.Remove(await _context.LoginTokens.FirstOrDefaultAsync(t => t.UserId == user.UserId)); //A little bit GovnoCoda
+
+            var token = LoginToken.Create(user.UserId);
+
+            user.InitializeUserState();
             user.Login();
-            Console.WriteLine(user.StateName); 
+
+            _context.LoginTokens.Add(token);
             _context.SaveChanges();
-            return Ok("Login successful");
+
+            return Ok(new
+            {
+                loginToken = token.Token,
+                message = "Login successful"
+            });
         }
 
         [HttpPost("create")]
@@ -74,7 +85,7 @@ namespace RentalChariot.Controllers
             user.LogOut();  
             await _context.SaveChangesAsync();
 
-            return Ok("Logout successful");
+            return Ok($"{user.UserId}: Logout successful");
         }
 
         [HttpPost("ban")]
@@ -112,16 +123,16 @@ namespace RentalChariot.Controllers
             var userToUnBanInput = request.UserToUnBan;
 
             var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == adminInput.Name);
+
             if (adminUser == null)
-            {
                 return NotFound("Admin not found");
-            }
+
             var Admin = adminUser as Admin;
             var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToUnBanInput.Name);
+
             if (User == null)
-            {
                 return NotFound("Admin not found");
-            }
+
             Admin.UnBan(User);
             await _context.SaveChangesAsync();
             return Ok("UnBan successful");

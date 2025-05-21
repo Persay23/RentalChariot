@@ -3,6 +3,9 @@
     public class BannedState : IUserState
     {
         public string StateName => "Banned";
+
+        public bool IsAbleToCreateRent => false;
+
         public IUserState Login()
         {
             return this;
