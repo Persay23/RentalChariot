@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentalChariot.Db;
 
@@ -11,9 +12,11 @@ using RentalChariot.Db;
 namespace RentalChariot.Migrations
 {
     [DbContext(typeof(RentalChariotDbContext))]
-    partial class RentalChariotDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522115716_RenameTableCarToCars")]
+    partial class RenameTableCarToCars
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,35 +92,6 @@ namespace RentalChariot.Migrations
                     b.HasKey("LoginId");
 
                     b.ToTable("LoginTokens");
-                });
-
-            modelBuilder.Entity("RentalChariot.Models.Rent", b =>
-                {
-                    b.Property<int>("RentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RentId"));
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StateName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RentId");
-
-                    b.ToTable("Rents");
                 });
 
             modelBuilder.Entity("RentalChariot.Models.User", b =>

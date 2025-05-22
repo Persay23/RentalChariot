@@ -2,7 +2,7 @@
 {
     public class UnPaidState : IRentState
     {
-        public string StateName => "UnPaid";
+        public string Name => "UnPaid";
 
         public bool isPaid => false;
 

@@ -10,15 +10,15 @@ namespace ModelTests
         {
             var car = Car.CreateCar
             (
-                carId: 3,
                 brand: "Toyota",
                 model: "Corolla",
                 number: "ABC-1234",
-                prodyear: new DateTime(2020, 1, 1),
+                prodYear: new DateTime(2020, 1, 1),
                 color: "White",
-                enginevol: 1600,
-                miliage: 50000
+                engineVol: 1600,
+                mileage: 50000
             );
+            car.CarId = 3;
             car.CarId.Should().Be( 3 );
             car.Brand.Should().Be("Toyota");
 

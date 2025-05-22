@@ -3,6 +3,6 @@
     public class UnBanRequest
     {
         public CurrentUser Admin { get; set; }
-        public UserCreateRequest UserToUnBan { get; set; }
+        public ExternalUser UserToUnBan { get; set; }
     }
 }

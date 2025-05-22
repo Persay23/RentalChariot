@@ -13,7 +13,7 @@
 
         public ICarState Deactivate()
         {
-            return new DeActivatedStatus();
+            return new DeactivatedState();
         }
 
         public ICarState SendFromRent()

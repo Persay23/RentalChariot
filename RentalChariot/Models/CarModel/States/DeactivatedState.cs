@@ -1,6 +1,6 @@
 ﻿namespace RentalChariot.CarManagement
 {
-    public class DeActivatedStatus : ICarState
+    public class DeactivatedState : ICarState
     {
         public string StateName => "Deactivated";
 

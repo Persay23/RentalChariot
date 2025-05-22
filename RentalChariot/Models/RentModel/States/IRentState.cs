@@ -2,7 +2,7 @@
 { 
     public interface IRentState
     {
-        string StateName { get; }
+        string Name { get; }
 
         bool isPaid { get; }
 

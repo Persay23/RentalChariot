@@ -1,6 +1,95 @@
 @RentalChariot_HostAddress = http://localhost:5234
 
-GET {{RentalChariot_HostAddress}}/weatherforecast/
-Accept: application/json
+# GET {{RentalChariot_HostAddress}}/weatherforecast/
+# Accept: application/json
 
 ###
+
+### LOGIN
+POST {{RentalChariot_HostAddress}}/UserAuthorization/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "TestName",
+  "Password": "TestPass"
+}
+
+###
+
+### AdminLOGIN
+POST {{RentalChariot_HostAddress}}/UserAuthorization/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "AdminTestName",
+  "Password": "AdminTestPass"
+}
+
+###
+
+### LOGOUT
+POST {{RentalChariot_HostAddress}}/UserAuthorization/logout
+Content-Type: application/json
+Accept: application/json
+
+{
+  "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw"
+}
+
+###
+
+### BAN USER
+POST {{RentalChariot_HostAddress}}/UserAuthorization/ban
+Content-Type: application/json
+Accept: application/json
+
+{
+  "admin": { "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw" },
+  "userToBan": { "name": "1" }
+}
+
+###
+
+### UNBAN USER
+POST {{RentalChariot_HostAddress}}/UserAuthorization/unban
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Admin": { "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw" },
+  "UserToUnBan": { "name": "1" }
+}
+
+###
+
+### Create Car
+POST {{RentalChariot_HostAddress}}/Car/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Brand" : "Honda",
+  "Model" : "CRV",  
+  "Number" :"RZ-7777",
+  "ProdYear" : "1997-02-01",
+  "Color" : "black",
+  "EngineVol" : "1800",
+  "Mileage" : "23000"
+}
+ 
+###
+
+### Create Rent
+
+POST {{RentalChariot_HostAddress}}/Rent/Create
+Content-Type: application/json
+Accept: application/json
+  {
+  "User": {"LoginToken": "P8Uy0MWtf76w0DrABNHBJ8FQm"},
+  "CarId" : "5"
+  }
+
+###
+

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentalChariot.Db;
 
@@ -11,9 +12,11 @@ using RentalChariot.Db;
 namespace RentalChariot.Migrations
 {
     [DbContext(typeof(RentalChariotDbContext))]
-    partial class RentalChariotDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522123609_RentTable")]
+    partial class RentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,7 +120,7 @@ namespace RentalChariot.Migrations
 
                     b.HasKey("RentId");
 
-                    b.ToTable("Rents");
+                    b.ToTable("Rent");
                 });
 
             modelBuilder.Entity("RentalChariot.Models.User", b =>

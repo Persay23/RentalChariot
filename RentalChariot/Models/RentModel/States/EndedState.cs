@@ -3,7 +3,7 @@ namespace RentalChariot.RentManagement
 {
     public class EndedState : IRentState
     {
-        public string StateName => "Ended";
+        public string Name => "Ended";
 
         public bool isPaid => true;
 

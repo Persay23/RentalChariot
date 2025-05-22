@@ -2,7 +2,7 @@
 {
     public class CancelledState : IRentState
     {
-        public string StateName => "Cancelled";
+        public string Name => "Cancelled";
 
         public bool isPaid => true;
 

@@ -29,8 +29,9 @@ namespace RentalChariot.Controllers
             if (user == null || user.Password != request.Password)
                 return Unauthorized("Wrong login or password");
             //Check if User has LoginToken delete LoginToken
-            if (user != null && await _context.LoginTokens.AnyAsync(u => u.UserId == user.UserId))
-                _context.LoginTokens.Remove(await _context.LoginTokens.FirstOrDefaultAsync(t => t.UserId == user.UserId)); //A little bit GovnoCoda
+            var existingToken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.UserId == user.UserId);
+            if (existingToken != null)
+                _context.LoginTokens.Remove(existingToken);
 
             var token = LoginToken.Create(user.UserId);
 
@@ -38,7 +39,7 @@ namespace RentalChariot.Controllers
             user.Login();
 
             _context.LoginTokens.Add(token);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {
@@ -75,14 +76,18 @@ namespace RentalChariot.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] CurrentUser request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+            var token = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == request.LoginToken);
+            if (token == null)
+                return NotFound("Token Not Found, mb you already logout");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == token.UserId);
 
             if (user == null)
             {
                 return NotFound("User not found");
             }
 
-            user.LogOut();  
+            user.LogOut();
+            _context.LoginTokens.Remove(token);
             await _context.SaveChangesAsync();
 
             return Ok($"{user.UserId}: Logout successful");
@@ -94,8 +99,12 @@ namespace RentalChariot.Controllers
             var adminInput = request.Admin;
             var userToBanInput = request.UserToBan;
 
-            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == adminInput.Name);
-            
+            var admintoken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == adminInput.LoginToken);
+
+            if (admintoken == null)
+                return BadRequest("Admin should log in");
+            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == admintoken.UserId);
+
             if (adminUser == null)
                 return NotFound("Admin not found");
 
@@ -107,7 +116,10 @@ namespace RentalChariot.Controllers
             var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToBanInput.Name);
 
             if (User == null)
-                return NotFound("Admin not found");
+                return NotFound("User not found");
+
+            if (User.StateName == "Banned")
+                return BadRequest("User Already Banned");
 
             Admin.Ban(User);
 
@@ -120,18 +132,29 @@ namespace RentalChariot.Controllers
         public async Task<IActionResult> UnBan([FromBody] UnBanRequest request)
         {
             var adminInput = request.Admin;
-            var userToUnBanInput = request.UserToUnBan;
+            var userToBanInput = request.UserToUnBan;
 
-            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.Name == adminInput.Name);
+            var admintoken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == adminInput.LoginToken);
+
+            if (admintoken == null)
+                return BadRequest("Admin should log in");
+            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == admintoken.UserId);
 
             if (adminUser == null)
                 return NotFound("Admin not found");
 
             var Admin = adminUser as Admin;
-            var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToUnBanInput.Name);
+
+            if (Admin == null)
+                return Unauthorized("Permission denied (You are not Admin)");
+
+            var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToBanInput.Name);
 
             if (User == null)
-                return NotFound("Admin not found");
+                return NotFound("User not found");
+
+            if (User.StateName != "Banned")
+                return BadRequest("User Already UnBanned");
 
             Admin.UnBan(User);
             await _context.SaveChangesAsync();

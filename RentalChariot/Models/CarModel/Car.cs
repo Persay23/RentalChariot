@@ -1,5 +1,6 @@
 ﻿using RentalChariot.CarManagement;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RentalChariot.Models
 {
@@ -36,26 +37,27 @@ namespace RentalChariot.Models
         [Required]
         public string StateName { get; set; }
 
-        private ICarState State { get; set; }   
+        private ICarState State { get; set; }
 
 
-        private Car(int carId, string brand, string model, string number, DateTime prodyear, string color, short enginevol, int miliage, ICarState State)
+        protected Car(string brand, string model, string number, DateTime prodYear, string color, short engineVol, int mileage)
         {
-            CarId = carId;
             Brand = brand;
             Model = model;
             Number = number;
-            ProdYear = prodyear;
+            ProdYear = prodYear;
             Color = color;
-            EngineVol = enginevol;
-            Mileage = miliage;
-
+            EngineVol = engineVol;
+            Mileage = mileage;
+            State = new AvaliableState();
             StateName = State.StateName;
         }
 
-        public static Car CreateCar(int carId, string brand, string model, string number, DateTime prodyear, string color, short enginevol, int miliage)
+        public static Car CreateCar( string brand, string model, string number, DateTime prodYear, string color, short engineVol, int mileage)
         {
-            return new Car(carId, brand, model, number, prodyear, color, enginevol, miliage, new AvaliableState());
+
+
+            return new Car(brand, model, number, prodYear, color, engineVol, mileage);
         }
 
         public void Activate()
@@ -72,7 +74,7 @@ namespace RentalChariot.Models
         }
         public void SendFromRent()
         {
-            UpdateState(State => State.SendFromRent());
+            UpdateState(State => State.SendFromRent()); 
         }
 
         public void UpdateState(Func<ICarState, ICarState> func)
@@ -85,6 +87,17 @@ namespace RentalChariot.Models
         {
             return State.IsAvaliable;
         }
+
+        public void InitializeCarState()
+        {
+            State = StateName switch
+            {
+                "UnAvaliable" => new UnAvailableState(),
+                "Avaliable" => new AvaliableState(),
+                "Deactivated" => new DeactivatedState(),
+            };
+        }
+
     }
 
 }
