@@ -18,8 +18,8 @@ namespace ModelTests
                 engineVol: 1600,
                 mileage: 50000
             );
-            car.CarId = 3;
-            car.CarId.Should().Be( 3 );
+            car.Id = 3;
+            car.Id.Should().Be( 3 );
             car.Brand.Should().Be("Toyota");
 
         }

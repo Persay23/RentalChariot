@@ -9,9 +9,9 @@ namespace ModelTests
         [Fact]
         public void UserCanBeCreated()
         {
-            var user = new User { UserId = 1, Name = "TestName", Password = "TestPass" };
+            var user = new User { Id = 1, Name = "TestName", Password = "TestPass" };
 
-            user.UserId.Should().Be(1);
+            user.Id.Should().Be(1);
             user.Name.Should().Be("TestName");
             user.Password.Should().Be("TestPass");
             user.StateName.Should().Be("UnActive");

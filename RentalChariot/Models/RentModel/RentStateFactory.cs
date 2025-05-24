@@ -6,14 +6,15 @@ namespace RentalChariot.Models.RentModel
         {
             public static IRentState Update(string stateName)
             {
+            Console.WriteLine(stateName);
                 return stateName switch {
                     "UnPaid" => new UnPaidState(),
                     "Active" => new ActiveState(),
                     "UnActive" => new UnActiveState(),
                     "Ended" => new EndedState(),
                     "Canceled" => new CancelledState(),
-                    "Deleted" => new CancelledState(),
-                    _ => new UnPaidState(),
+                    "Deleted" => new DeletedState(),
+                    //_ => new UnPaidState(),
                 }; 
             }
         }

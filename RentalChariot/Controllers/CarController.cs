@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RentalChariot.Data;
 using RentalChariot.Db;
 using RentalChariot.DTOs;
 using RentalChariot.Models;
@@ -10,11 +11,11 @@ namespace RentalChariot.Controllers
     [Route("[controller]")]
     public class CarController : ControllerBase
     {
-        private readonly RentalChariotDbContext _context;
-
-        public CarController(RentalChariotDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        
+        public CarController(IUnitOfWork unitofWork)
         {
-            _context = context;
+            _unitOfWork = unitofWork;
         }
 
         [HttpPost("create")]
@@ -22,9 +23,9 @@ namespace RentalChariot.Controllers
         {
             if (request == null)
                 return BadRequest("Request is null");
-            var car = await _context.Cars.SingleOrDefaultAsync(c => c.Number == request.Number);
-            if (car != null)
+            if (await _unitOfWork.Cars.IsExist(request.Number) )
                 return Unauthorized("Car already exist with this number");
+
             var newCar = Car.CreateCar(
                 request.Brand,
                 request.Model,
@@ -34,8 +35,8 @@ namespace RentalChariot.Controllers
                 request.EngineVol,
                 request.Mileage
                 );
-            _context.Cars.Add(newCar);
-            _context.SaveChanges();
+            _unitOfWork.Cars.Add(newCar);
+            _unitOfWork.Complete();
             return Ok("Car created");
 
         }

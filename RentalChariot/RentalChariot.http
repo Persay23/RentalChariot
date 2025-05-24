@@ -11,8 +11,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Name": "TestName",
-  "Password": "TestPass"
+  "Name": "1",
+  "Password": "2"
 }
 
 ###
@@ -23,8 +23,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Name": "AdminTestName",
-  "Password": "AdminTestPass"
+  "Name": "",
+  "Password": ""
 }
 
 ###
@@ -35,7 +35,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw"
+  "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"
 }
 
 ###
@@ -46,8 +46,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "admin": { "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw" },
-  "userToBan": { "name": "1" }
+  "admin": { "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF" },
+  "userToBan": { "name": "user" }
 }
 
 ###
@@ -58,8 +58,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Admin": { "LoginToken": "mefIkYbE7tYVHXQ5Xup4k3ykw" },
-  "UserToUnBan": { "name": "1" }
+  "Admin": { "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF" },
+  "UserToUnBan": { "name": "user" }
 }
 
 ###
@@ -72,7 +72,7 @@ Accept: application/json
 {
   "Brand" : "Honda",
   "Model" : "CRV",  
-  "Number" :"RZ-7777",
+  "Number" :"RZ-7778",
   "ProdYear" : "1997-02-01",
   "Color" : "black",
   "EngineVol" : "1800",
@@ -87,9 +87,23 @@ POST {{RentalChariot_HostAddress}}/Rent/Create
 Content-Type: application/json
 Accept: application/json
   {
-  "User": {"LoginToken": "P8Uy0MWtf76w0DrABNHBJ8FQm"},
-  "CarId" : "5"
+  "User": {"LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"},
+  "CarId" : "4"
   }
 
 ###
 
+### Create Rent2  
+POST {{RentalChariot_HostAddress}}/Rent/Create
+Content-Type: application/json
+Accept: application/json
+  {
+  "User": {"LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"},
+  "CarId" : "3"
+  }
+
+###
+
+### Pay 
+
+  POST {{RentalChariot_HostAddress}}/Rent/Pay/129

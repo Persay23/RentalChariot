@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RentalChariot.Data;
 using RentalChariot.Db;
 using RentalChariot.DTOs;
 using RentalChariot.Models;
@@ -14,32 +15,38 @@ namespace RentalChariot.Controllers
     [Route("[controller]")]
     public class UserAuthorizationController : ControllerBase
     {
-        private readonly RentalChariotDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserAuthorizationController(RentalChariotDbContext context)
+        public UserAuthorizationController(IUnitOfWork unitofWork)
         {
-            _context = context;
+            _unitOfWork = unitofWork;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
+            if (request == null || string.IsNullOrEmpty(request.Name))
+                return BadRequest("Invalid login request");
+            Console.WriteLine(_unitOfWork is null);
+            Console.WriteLine(_unitOfWork.Users is null);
+
+            var user = await _unitOfWork.Users.GetByName(request.Name);
 
             if (user == null || user.Password != request.Password)
                 return Unauthorized("Wrong login or password");
-            //Check if User has LoginToken delete LoginToken
-            var existingToken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.UserId == user.UserId);
-            if (existingToken != null)
-                _context.LoginTokens.Remove(existingToken);
 
-            var token = LoginToken.Create(user.UserId);
+            var Token = await _unitOfWork.LoginTokens.GetTokenByUserId(user.Id);
+
+            if (Token is not null)
+                _unitOfWork.LoginTokens.Remove(Token);
+
+            var token = LoginToken.Create(user.Id);
 
             user.InitializeUserState();
             user.Login();
 
-            _context.LoginTokens.Add(token);
-            await _context.SaveChangesAsync();
+            _unitOfWork.LoginTokens.Add(token);
+            _unitOfWork.Complete();
 
             return Ok(new
             {
@@ -55,11 +62,7 @@ namespace RentalChariot.Controllers
                 return BadRequest("Request is null");
             if(request.Password == null || request.Name == null)
                 return BadRequest("Name or Password is null");
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == request.Name);
-            user.InitializeUserState();
-
-            if (user != null)
+            if (await _unitOfWork.Users.IsExist(request.Name))
                 return Unauthorized("Account already exist");
 
             var newUser = new User
@@ -67,19 +70,20 @@ namespace RentalChariot.Controllers
                 Name = request.Name,
                 Password = request.Password
             };
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            _unitOfWork.Users.Add(newUser);
+            _unitOfWork.Complete();
+
             return Ok("Account created successfully");
         }
-        //Not Cool everyone could use it
-        //TODO maybe create some kinda class Token that only User will see 
+
+
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] CurrentUser request)
         {
-            var token = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == request.LoginToken);
+            var token = await _unitOfWork.LoginTokens.GetToken(request.LoginToken);
             if (token == null)
                 return NotFound("Token Not Found, mb you already logout");
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == token.UserId);
+            var user = await _unitOfWork.Users.GetUserByToken(request.LoginToken);
 
             if (user == null)
             {
@@ -87,10 +91,12 @@ namespace RentalChariot.Controllers
             }
 
             user.LogOut();
-            _context.LoginTokens.Remove(token);
-            await _context.SaveChangesAsync();
 
-            return Ok($"{user.UserId}: Logout successful");
+            _unitOfWork.LoginTokens.Remove(token);
+
+            _unitOfWork.Complete();
+
+            return Ok($"{user.Id}: Logout successful");
         }
 
         [HttpPost("ban")]
@@ -99,22 +105,19 @@ namespace RentalChariot.Controllers
             var adminInput = request.Admin;
             var userToBanInput = request.UserToBan;
 
-            var admintoken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == adminInput.LoginToken);
-
+            var admintoken = await _unitOfWork.LoginTokens.GetToken(adminInput.LoginToken);
             if (admintoken == null)
                 return BadRequest("Admin should log in");
-            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == admintoken.UserId);
 
+            var adminUser = await _unitOfWork.Users.GetUserByToken(admintoken);
             if (adminUser == null)
                 return NotFound("Admin not found");
 
             var Admin = adminUser as Admin;
-
             if (Admin == null)
                 return Unauthorized("Permission denied (You are not Admin)");
 
-            var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToBanInput.Name);
-
+            var User = await _unitOfWork.Users.GetByName(userToBanInput.Name);
             if (User == null)
                 return NotFound("User not found");
 
@@ -123,7 +126,7 @@ namespace RentalChariot.Controllers
 
             Admin.Ban(User);
 
-            await _context.SaveChangesAsync();
+            _unitOfWork.Complete();
             return Ok("Ban successful");
         }
 
@@ -134,22 +137,19 @@ namespace RentalChariot.Controllers
             var adminInput = request.Admin;
             var userToBanInput = request.UserToUnBan;
 
-            var admintoken = await _context.LoginTokens.FirstOrDefaultAsync(t => t.Token == adminInput.LoginToken);
-
+            var admintoken = await _unitOfWork.LoginTokens.GetToken(adminInput.LoginToken);
             if (admintoken == null)
                 return BadRequest("Admin should log in");
-            var adminUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == admintoken.UserId);
 
+            var adminUser = await _unitOfWork.Users.GetUserByToken(admintoken);
             if (adminUser == null)
                 return NotFound("Admin not found");
 
             var Admin = adminUser as Admin;
-
             if (Admin == null)
                 return Unauthorized("Permission denied (You are not Admin)");
 
-            var User = await _context.Users.FirstOrDefaultAsync(u => u.Name == userToBanInput.Name);
-
+            var User = await _unitOfWork.Users.GetByName(userToBanInput.Name);
             if (User == null)
                 return NotFound("User not found");
 
@@ -157,7 +157,7 @@ namespace RentalChariot.Controllers
                 return BadRequest("User Already UnBanned");
 
             Admin.UnBan(User);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Complete();
             return Ok("UnBan successful");
         }
 

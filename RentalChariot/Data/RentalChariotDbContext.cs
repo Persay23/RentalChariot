@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalChariot.Models;
-using RentalChariot.UserManagement;
 
 namespace RentalChariot.Db;
 

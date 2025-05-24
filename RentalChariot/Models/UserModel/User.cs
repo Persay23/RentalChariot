@@ -8,7 +8,7 @@ namespace RentalChariot.Models;
 public class User
 {
     [Key]
-    public int UserId { get; set; }
+    public int Id { get; set; }
     [Required]
     [MaxLength(100)]
     public string Name { get; set; }

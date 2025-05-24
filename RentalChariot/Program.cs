@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using RentalChariot.Data;
 using RentalChariot.Db;
-using RentalChariot.Models.RentModel.Services;
 using RentalChariot.UserManagement;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<RentService>();
+//builder.Services.AddScoped<RentService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

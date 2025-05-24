@@ -16,7 +16,7 @@ namespace ModelTests
         private readonly Car car;
 
         public RentTests() {
-            user = new User { UserId = 1, Name = "TestName", Password = "TestPass" };
+            user = new User { Id = 1, Name = "TestName", Password = "TestPass" };
           
             car = Car.CreateCar
             (
@@ -28,9 +28,10 @@ namespace ModelTests
                 engineVol: 1600,
                 mileage: 50000
             );
-            car.CarId = 2;
+            car.Id = 2;
 
         }
+        //Old
         //[Fact]
         //public void RentCanBeCreated()
         //{

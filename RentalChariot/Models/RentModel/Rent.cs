@@ -8,8 +8,11 @@ namespace RentalChariot.Models
 {
     public class Rent
     {
+        [Timestamp]
+        public byte[] Version { get; set; }
+
         [Key]
-        public int RentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public int UserId { get; set; }
@@ -60,8 +63,8 @@ namespace RentalChariot.Models
             var RentDate = rentDay;
             var ReturnDate = returnDay;
 
-            var userid = user.UserId;
-            var carid = car.CarId;
+            var userid = user.Id;
+            var carid = car.Id;
 
             return new Rent(userid, carid, RentDate, ReturnDate);
 
@@ -72,34 +75,6 @@ namespace RentalChariot.Models
             State = func(State);
             StateName = State.Name;
         }
-
-        //private async Task WaitUntilStartDate()
-        //{
-        //    while (!IsStart()) {
-        //        await Task.Delay(50);
-        //    }
-
-        //    if (State.isPaid == false)
-        //    {
-        //        UpdateState(State => State.Cancel());
-        //        return;
-        //    }
-
-        //    UpdateState(State => State.StartRent());
-        //    Timer = () => WaitUntilReturnDate();
-        //    _ = Start();
-
-        //}
-
-        //private async Task WaitUntilReturnDate()
-        //{
-        //    while (!IsEnd())
-        //    {
-        //        await Task.Delay(50);
-        //    }
-
-        //    UpdateState(State => State.EndRent());
-        //}
 
         public bool IsStart()
         {
@@ -124,10 +99,7 @@ namespace RentalChariot.Models
         public void StartRent() => UpdateState(s => s.StartRent());
 
         public void EndRent() => UpdateState(s => s.EndRent());
-        //public async Task Start()
-        //{
-        //    await Timer();
-        //}
+
 
     }
 }
