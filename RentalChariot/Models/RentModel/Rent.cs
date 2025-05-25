@@ -8,6 +8,7 @@ namespace RentalChariot.Models
 {
     public class Rent
     {
+        //TO DELETE TEST PROPERTY
         [Timestamp]
         public byte[] Version { get; set; }
 

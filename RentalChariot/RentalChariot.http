@@ -106,4 +106,4 @@ Accept: application/json
 
 ### Pay 
 
-  POST {{RentalChariot_HostAddress}}/Rent/Pay/129
+  POST {{RentalChariot_HostAddress}}/Rent/Pay/141

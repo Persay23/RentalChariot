@@ -41,12 +41,14 @@ namespace RentalChariot.BackGroundServices
             _unitOfWork.Rents.Update(rent);
             rent = _unitOfWork.Rents.Get(rent.Id);
             rent.State = RentStateFactory.Update(rent.StateName);
-            //Console.WriteLine("StartRent");
-            //Console.WriteLine($"{rent.StateName}      Start1");
-            //Console.WriteLine($"{rent.State}      Start2");
+
             rent.UpdateState(state => state.StartRent());
-            //Console.WriteLine($"{rent.StateName}      Start3");
-            //Console.WriteLine($"{rent.State}      Start4");
+
+            Console.WriteLine(rent.State.isPaid);
+
+            if (!rent.State.isPaid) {
+                rent.Cancel();
+            }
             _unitOfWork.Complete();
         }
 
@@ -58,7 +60,7 @@ namespace RentalChariot.BackGroundServices
                 await Task.Delay(50);
             }
         }
-        
+       
 
         private void EndRent()
         {
