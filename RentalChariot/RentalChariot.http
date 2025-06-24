@@ -1,6 +1,109 @@
 @RentalChariot_HostAddress = http://localhost:5234
 
-GET {{RentalChariot_HostAddress}}/weatherforecast/
-Accept: application/json
+# GET {{RentalChariot_HostAddress}}/weatherforecast/
+# Accept: application/json
 
 ###
+
+### LOGIN
+POST {{RentalChariot_HostAddress}}/UserAuthorization/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "1",
+  "Password": "2"
+}
+
+###
+
+### AdminLOGIN
+POST {{RentalChariot_HostAddress}}/UserAuthorization/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "",
+  "Password": ""
+}
+
+###
+
+### LOGOUT
+POST {{RentalChariot_HostAddress}}/UserAuthorization/logout
+Content-Type: application/json
+Accept: application/json
+
+{
+  "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"
+}
+
+###
+
+### BAN USER
+POST {{RentalChariot_HostAddress}}/UserAuthorization/ban
+Content-Type: application/json
+Accept: application/json
+
+{
+  "admin": { "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF" },
+  "userToBan": { "name": "user" }
+}
+
+###
+
+### UNBAN USER
+POST {{RentalChariot_HostAddress}}/UserAuthorization/unban
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Admin": { "LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF" },
+  "UserToUnBan": { "name": "user" }
+}
+
+###
+
+### Create Car
+POST {{RentalChariot_HostAddress}}/Car/Create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Brand" : "Honda",
+  "Model" : "CRV",  
+  "Number" :"RZ-7778",
+  "ProdYear" : "1997-02-01",
+  "Color" : "black",
+  "EngineVol" : "1800",
+  "Mileage" : "23000"
+}
+ 
+###
+
+### Create Rent
+
+POST {{RentalChariot_HostAddress}}/Rent/Create
+Content-Type: application/json
+Accept: application/json
+  {
+  "User": {"LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"},
+  "CarId" : "4"
+  }
+
+###
+
+### Create Rent2  
+POST {{RentalChariot_HostAddress}}/Rent/Create
+Content-Type: application/json
+Accept: application/json
+  {
+  "User": {"LoginToken": "Zej7OvgGodIAWK8OIfkkn1tqF"},
+  "CarId" : "3"
+  }
+
+###
+
+### Pay 
+
+  POST {{RentalChariot_HostAddress}}/Rent/Pay/141
