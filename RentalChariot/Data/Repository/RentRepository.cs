@@ -11,7 +11,7 @@ namespace RentalChariot.LoginModel
     {
         public RentRepository(RentalChariotDbContext context) : base(context)
         {
-            _context = context;
+
         }
 
         public Rent CreateRent(User user, Car car, DateTime Now, DateTime End)

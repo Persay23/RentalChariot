@@ -8,7 +8,6 @@ namespace RentalChariot.Models.UserModel.Services
     {
         public UserRepository(RentalChariotDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<User> GetByName(string name)

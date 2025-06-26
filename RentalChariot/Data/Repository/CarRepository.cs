@@ -9,7 +9,7 @@ namespace RentalChariot.Data.Repository
     {
         public CarRepository(RentalChariotDbContext context) : base(context) 
         {
-            // TODO Initialize the repository with the context
+
         }
 
         public async Task<bool> IsAvaliableToRent(int Carid)
