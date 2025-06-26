@@ -6,12 +6,9 @@ using RentalChariot.UserManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-//builder.Services.AddScoped<RentService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
                                                                                       

@@ -9,6 +9,7 @@ namespace RentalChariot.LoginModel
     {
         public LoginRepository(RentalChariotDbContext context) : base(context)
         {
+            _context = context;
         }
 
         public async Task<LoginToken> GetToken(string token)

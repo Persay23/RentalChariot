@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 using RentalChariot.RentManagement;
-
 
 namespace RentalChariot.Models
 {
     public class Rent
     {
-        //TO DELETE TEST PROPERTY
         [Timestamp]
         public byte[] Version { get; set; }
 
@@ -20,13 +17,6 @@ namespace RentalChariot.Models
 
         [Required]
         public int CarId { get; set; }
-        //I dont think we need RentEmployeeID and ReturnEmployeeID
-
-        //Later add RentPlaceId 
-        //[Required]
-        //public int RentPlaceId { get; set; }
-
-        //public int? ReturnPlaceId { get; set; }
 
         [Required]
         public DateTime RentDate { get; set; }
@@ -40,11 +30,6 @@ namespace RentalChariot.Models
         [Required]
         public string StateName { get; set; }
 
-
-        //public decimal? Deposit {  get; set; } //To do add maxvalue 999999.99 minvalue 0
-
-        //public decimal? UnitPrice { get; set; } //To do add maxvalue 999999.99 minvalue 0
-
         protected Rent(int userId, int carId, DateTime rentDate, DateTime returnDate) {
             UserId = userId;
             CarId = carId;
@@ -54,6 +39,7 @@ namespace RentalChariot.Models
             StateName = State.Name;
 
         }
+
         public static Rent CreateRent(User user, Car car, DateTime rentDay, DateTime returnDay)
         {
             if (!user.IsAbleToCreateRent())
@@ -68,7 +54,6 @@ namespace RentalChariot.Models
             var carid = car.Id;
 
             return new Rent(userid, carid, RentDate, ReturnDate);
-
         }
 
         public void UpdateState(Func<IRentState, IRentState> func)
@@ -100,7 +85,5 @@ namespace RentalChariot.Models
         public void StartRent() => UpdateState(s => s.StartRent());
 
         public void EndRent() => UpdateState(s => s.EndRent());
-
-
     }
 }

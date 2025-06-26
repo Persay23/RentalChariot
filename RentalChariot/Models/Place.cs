@@ -12,7 +12,7 @@ namespace RentalChariot.Models
         public string Street { get; set; }
 
         [Required]
-        [StringLength(8, MinimumLength = 8)] //Mb is better to add regular expression 
+        [StringLength(8, MinimumLength = 8)]
         public string Number { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace RentalChariot.Models
         public string City { get; set; }
 
         [Required]
-        [StringLength(6, MinimumLength = 6)] //Mb is better to add regular expression 
+        [StringLength(6, MinimumLength = 6)]
         public string PostCode { get; set; }
 
         [StringLength(12)]

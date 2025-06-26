@@ -21,7 +21,6 @@ namespace ModelTests
             car.Id = 3;
             car.Id.Should().Be( 3 );
             car.Brand.Should().Be("Toyota");
-
         }
     }
 }

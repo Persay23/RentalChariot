@@ -15,11 +15,11 @@ namespace RentalChariot.Models
         public string Token { get; set; }
 
         [Required]
-        public DateTime LasLoginTime { get; set; } // Rename to LoginTime
+        public DateTime LoginTime { get; set; }
 
         private LoginToken(int userId) {
             UserId = userId;
-            LasLoginTime = DateTime.Now;
+            LoginTime = DateTime.Now;
             Token = GenerateToken();
         }
 
@@ -28,10 +28,9 @@ namespace RentalChariot.Models
             return new LoginToken(userId);
         }    
 
-
         private string GenerateToken()
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // TODO consider using a more secure token generation method
             StringBuilder result = new StringBuilder();
             Random random = new Random();
 
@@ -42,10 +41,5 @@ namespace RentalChariot.Models
 
             return result.ToString();
         }
-
-
-
     }
-
-
 }

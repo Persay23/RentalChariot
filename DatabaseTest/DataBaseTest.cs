@@ -1,11 +1,9 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using RentalChariot.Db;
 
-namespace Database.Tests
+namespace DatabaseTest
 {
     public class DataBaseTest
     {

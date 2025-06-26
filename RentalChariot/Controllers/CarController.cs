@@ -38,8 +38,6 @@ namespace RentalChariot.Controllers
             _unitOfWork.Cars.Add(newCar);
             _unitOfWork.Complete();
             return Ok("Car created");
-
         }
-
     }
 }

@@ -104,8 +104,8 @@ namespace RentalChariot.Controllers
         {
             var adminInput = request.Admin;
             var userToBanInput = request.UserToBan;
-
             var admintoken = await _unitOfWork.LoginTokens.GetToken(adminInput.LoginToken);
+
             if (admintoken == null)
                 return BadRequest("Admin should log in");
 
@@ -160,6 +160,5 @@ namespace RentalChariot.Controllers
             _unitOfWork.Complete();
             return Ok("UnBan successful");
         }
-
     }
 }

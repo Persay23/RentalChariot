@@ -13,7 +13,5 @@ namespace RentalChariot.Data
 
         int Complete();
         Task<int> CompleteAsync();
-
-
     }
 }
