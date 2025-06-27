@@ -1,12 +1,20 @@
 @RentalChariot_HostAddress = http://localhost:5234
+@gg = https://rentalchariot20250627173300-bfcybhhccnf7dme8.canadacentral-01.azurewebsites.net
+
 
 # GET {{RentalChariot_HostAddress}}/weatherforecast/
 # Accept: application/json
 
-###
+### Test 
+Get {{RentalChariot_HostAddress}}/Test
+
+### Test
+Get {{gg}}/Test
+
+
 
 ### LOGIN
-POST {{RentalChariot_HostAddress}}/UserAuthorization/login
+POST {{gg}}/UserAuthorization/login
 Content-Type: application/json
 Accept: application/json
 
