@@ -65,6 +65,7 @@ namespace RentalChariot.Models
         public bool IsStart()
         {
             return RentDate <= DateTime.Now;
+
         }
 
         public bool IsEnd()

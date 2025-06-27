@@ -43,7 +43,7 @@ namespace RentalChariot.BackGroundServices
             Console.WriteLine(rent.State.isPaid);
 
             if (!rent.State.isPaid) {
-                rent.Cancel();
+                rent.UpdateState(state => state.Cancel());
             }
             _unitOfWork.Complete();
         }
