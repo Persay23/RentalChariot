@@ -13,7 +13,5 @@
         ICarState Deactivate();
 
         ICarState Activate();
-
-
     }
 }

@@ -6,7 +6,6 @@
 
         bool isPaid { get; }
 
-
         IRentState PayForRent();
 
         IRentState Cancel();

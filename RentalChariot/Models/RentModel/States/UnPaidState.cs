@@ -15,9 +15,9 @@
         {
             return new UnActiveState();
         }
+
         public IRentState EndRent()
         {
-            //Unreal
             return this;
         }
 

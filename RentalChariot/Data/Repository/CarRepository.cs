@@ -7,7 +7,10 @@ namespace RentalChariot.Data.Repository
 {
     public class CarRepository : Repository<Car>, ICarRepository
     {
-        public CarRepository(RentalChariotDbContext context) : base(context) { }
+        public CarRepository(RentalChariotDbContext context) : base(context) 
+        {
+
+        }
 
         public async Task<bool> IsAvaliableToRent(int Carid)
         {

@@ -16,6 +16,7 @@ namespace ModelTests
             user.Password.Should().Be("TestPass");
             user.StateName.Should().Be("UnActive");
         }
+
         [Fact]
         public void AdminCanBeCreated()
         {
@@ -35,6 +36,7 @@ namespace ModelTests
 
             user.StateName.Should().Be("Active");
         }
+
         [Fact]
         public void AdminLoginShouldChangeStateName()
         {
@@ -44,6 +46,7 @@ namespace ModelTests
 
             user.StateName.Should().Be("Active");
         }
+
         [Fact]
         public void UserLogOutShouldChangeStateName()
         {
@@ -54,6 +57,7 @@ namespace ModelTests
 
             user.StateName.Should().Be("UnActive");
         }
+
         [Fact]
         public void BanShouldChangeStateName()
         {
@@ -65,8 +69,8 @@ namespace ModelTests
             user.Login();
             user.StateName.Should().Be("Banned");
             user.UserState.Should().BeOfType<BannedState>(); 
-
         }
+
         [Fact]
         public void UnBanShouldChangeStateName()
         {
@@ -77,7 +81,6 @@ namespace ModelTests
             user.StateName.Should().Be("Banned");
             admin.UnBan(user);
             user.StateName.Should().Be("UnActive");
-
         }
     }
 }

@@ -6,7 +6,8 @@ namespace RentalChariot.Models.UserModel.Services
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(RentalChariotDbContext context) : base(context){ 
+        public UserRepository(RentalChariotDbContext context) : base(context)
+        {
         }
 
         public async Task<User> GetByName(string name)

@@ -39,7 +39,6 @@ namespace RentalChariot.Models
 
         private ICarState State { get; set; }
 
-
         protected Car(string brand, string model, string number, DateTime prodYear, string color, short engineVol, int mileage)
         {
             Brand = brand;
@@ -55,8 +54,6 @@ namespace RentalChariot.Models
 
         public static Car CreateCar( string brand, string model, string number, DateTime prodYear, string color, short engineVol, int mileage)
         {
-
-
             return new Car(brand, model, number, prodYear, color, engineVol, mileage);
         }
 
@@ -64,14 +61,17 @@ namespace RentalChariot.Models
         {
             UpdateState(State => State.Activate());
         }
+
         public void Deactivate()
         {
             UpdateState(State => State.Deactivate());
         }
+
         public void SendToRent()
         {
             UpdateState(State => State.SendToRent());
         }
+
         public void SendFromRent()
         {
             UpdateState(State => State.SendFromRent()); 
@@ -97,7 +97,5 @@ namespace RentalChariot.Models
                 "Deactivated" => new DeactivatedState(),
             };
         }
-
     }
-
 }

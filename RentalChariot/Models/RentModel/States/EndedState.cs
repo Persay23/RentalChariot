@@ -1,5 +1,4 @@
-﻿
-namespace RentalChariot.RentManagement
+﻿namespace RentalChariot.RentManagement
 {
     public class EndedState : IRentState
     {

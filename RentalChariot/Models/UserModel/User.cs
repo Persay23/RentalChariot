@@ -4,24 +4,26 @@ using RentalChariot.UserManagement;
 
 namespace RentalChariot.Models;
 
-//USER it's like a CLIENT , later add FirstName, LastName, email
 public class User
 {
     [Key]
     public int Id { get; set; }
+
     [Required]
     [MaxLength(100)]
     public string Name { get; set; }
+
     [Required]
     [MaxLength(100)]
     public string Password { get; set; }
 
-
     [Required]
     [MaxLength(100)]
     public string StateName { get; set; }
+
     [NotMapped]
     public IUserState UserState { get; set; }
+
     [NotMapped]
     public IUserRole UserRole { get; set; }
 
@@ -31,16 +33,19 @@ public class User
         StateName = UserState.StateName;
         UserRole = new UserRole();
     }
+
     public void Login()
     {
         UserState = UserState.Login();
         UpdateUser();
     }
+
     public void LogOut()
     {
         UserState = UserState.LogOut();
         UpdateUser();
     }
+
     public void InitializeUserState()
     {
         UserState = StateName switch
@@ -61,6 +66,7 @@ public class User
         StateName = UserState.StateName; 
     }
 }
+
 public class Admin : User
 {
     public Admin() : base()
@@ -72,7 +78,6 @@ public class Admin : User
     }
     public void Ban(User user)
     {
-        //UserRole.Ban() return a IUserState not IUserRole
         user.UserState = UserRole.Ban();
         user.UpdateUser();
 
@@ -84,4 +89,4 @@ public class Admin : User
         user.UserState = UserRole.UnBan();
         user.UpdateUser();
     }
-  }
+}

@@ -6,7 +6,6 @@ namespace RentalChariot.Data.Repository
 {
     public interface IRentRepository : IRepository<Rent>
     {
-
         Rent CreateRent(User user, Car car, DateTime Now, DateTime End);
 
         Rent GetById(int id);

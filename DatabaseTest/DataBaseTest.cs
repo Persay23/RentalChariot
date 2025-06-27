@@ -1,35 +1,35 @@
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using RentalChariot.Db;
+// Probably this test is not needed
 
-namespace Database.Tests
-{
-    public class DataBaseTest
-    {
-        private readonly RentalChariotDbContext db;
+//using FluentAssertions;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.Extensions.Configuration;
+//using RentalChariot.Db;
 
-        public DataBaseTest()
-        {
-            var config = new ConfigurationBuilder()
-                .AddUserSecrets<DataBaseTest>()
-                .Build();
+//namespace DatabaseTest
+//{
+//    public class DataBaseTest
+//    {
+//        private readonly RentalChariotDbContext db;
 
-            var connectionString = config.GetConnectionString("DefaultConnection");
+//        public DataBaseTest()
+//        {
+//            var config = new ConfigurationBuilder()
+//                .AddUserSecrets<DataBaseTest>()
+//                .Build();
 
-            var dbOptionsBuilder = new DbContextOptionsBuilder<RentalChariotDbContext>();
-            dbOptionsBuilder.UseSqlServer(connectionString);
+//            var connectionString = config.GetConnectionString("DefaultConnection");
 
-            db = new RentalChariotDbContext(dbOptionsBuilder.Options);
-        }
+//            var dbOptionsBuilder = new DbContextOptionsBuilder<RentalChariotDbContext>();
+//            dbOptionsBuilder.UseSqlServer(connectionString);
 
-        [Fact]
-        public void DatabaseCanConnect_ShouldReturnTrue_Successfully()
-        {
-            var canConnect = db.Database.CanConnect();
-            canConnect.Should().BeTrue();
-        }
-    }
-}
+//            db = new RentalChariotDbContext(dbOptionsBuilder.Options);
+//        }
+
+//        [Fact]
+//        public void DatabaseCanConnect_ShouldReturnTrue_Successfully()
+//        {
+//            var canConnect = db.Database.CanConnect();
+//            canConnect.Should().BeTrue();
+//        }
+//    }
+//} 

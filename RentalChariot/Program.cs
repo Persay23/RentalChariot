@@ -6,22 +6,18 @@ using RentalChariot.UserManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-//builder.Services.AddScoped<RentService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-                                                                                      
 builder.Services.AddDbContext<RentalChariotDbContext>(options => 
     options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-    app.MapOpenApi();
+app.MapOpenApi();
 
 app.UseAuthorization();
 app.MapControllers();

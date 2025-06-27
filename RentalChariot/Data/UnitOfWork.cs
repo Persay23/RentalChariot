@@ -40,7 +40,5 @@ namespace RentalChariot.Data
         {
             return await _context.SaveChangesAsync();
         }
-
-
     }
 }

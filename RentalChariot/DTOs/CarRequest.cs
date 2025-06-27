@@ -6,7 +6,6 @@ namespace RentalChariot.DTOs
 {
     public class CarRequest
     {
-
         public string Brand { get; set; }
 
         public string Model { get; set; }
@@ -20,6 +19,5 @@ namespace RentalChariot.DTOs
         public short EngineVol { get; set; }
 
         public int Mileage { get; set; }
-
     }
 }
